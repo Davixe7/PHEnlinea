@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\VisitPorteria;
+use Inertia\Inertia;
 
 class VisitController extends Controller
 {
@@ -14,6 +15,7 @@ class VisitController extends Controller
     public function index()
     {
       $visits = auth()->user()->visits()->orderBy('created_at', 'DESC')->with('visitor')->get();
+      return Inertia::render('Visitors', compact('visits'));
       return view('admin.visits', ['visits' => $visits]);
     }
 }

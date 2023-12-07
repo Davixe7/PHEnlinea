@@ -28,6 +28,7 @@ class StoreExtension extends FormRequest
 
     return [
       'name' => [
+        'required',
         function($att, $value, $fail) use($admin){
           if( !$this->extension || $this->extension->name != $this->name ){
             $extensionsCount = $admin->extensions()->name( $this->name )->count();
@@ -37,7 +38,7 @@ class StoreExtension extends FormRequest
           }
         }
       ],
-      'phone_1' => 'nullable|numeric|digits_between:10,10',
+      'phone_1' => 'required|numeric|digits_between:10,10',
       'phone_2' => 'nullable|numeric|digits_between:10,10',
       'phone_3' => 'nullable|numeric|digits_between:10,10',
       'phone_4' => 'nullable|numeric|digits_between:3,15',

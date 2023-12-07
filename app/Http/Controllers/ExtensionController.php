@@ -7,6 +7,7 @@ use App\Extension;
 use App\Http\Requests\StoreExtension as StoreExtensionRequest;
 use App\Http\Resources\Census as CensusResource;
 use App\Traits\Devices;
+use Inertia\Inertia;
 
 class ExtensionController extends Controller
 {
@@ -18,6 +19,7 @@ class ExtensionController extends Controller
     public function index()
     {
       $extensions = auth()->user()->extensions()->orderBy('name')->get();
+      return Inertia::render('Extensions/Extensions', compact('extensions'));
       return view('admin.extensions.index', compact('extensions'));
     }
 
@@ -28,10 +30,12 @@ class ExtensionController extends Controller
     */
     public function create()
     {
+      return Inertia::render('Extensions/ExtensionForm');
       return view('admin.extensions.create');
     }
 
     public function edit(Extension $extension){
+      return Inertia::render('Extensions/ExtensionForm', compact('extension'));
       return view('admin.extensions.edit', ['extension'=>$extension->load('residents'), 'extension_id'=>$extension->id]);
     }
     
@@ -47,6 +51,7 @@ class ExtensionController extends Controller
      */
     public function store(StoreExtensionRequest $request)
     {
+      $request->validate(['name:required']);
       $password = mt_rand(100000000000, 999999999999) . '';
 
       $extension = Extension::create([
@@ -87,7 +92,7 @@ class ExtensionController extends Controller
         }
       }
 
-      return new CensusResource( $extension );
+      return to_route('extensions.edit', compact('extension'));
     }
 
     /**
@@ -97,7 +102,7 @@ class ExtensionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Extension $extension)
+    public function update(StoreExtensionRequest $request, Extension $extension)
     {
       $extension->update([
         'name'             => ($request->name) ?: $extension->name,
@@ -123,7 +128,7 @@ class ExtensionController extends Controller
         'resident_id_4'    => $request->resident_id_4,
       ]);
 
-      return new CensusResource( $extension );
+      return to_route('extensions.edit', compact('extension'));
     }
 
     /**
@@ -136,7 +141,7 @@ class ExtensionController extends Controller
     {
       $extension->residents()->delete();
       $extension->delete();
-      return response()->json(['data'=>'Extension deleted successfuly']);
+      return to_route('extensions.index');
     }
 
     public function _list(){

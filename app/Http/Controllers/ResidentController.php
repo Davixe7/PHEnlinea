@@ -9,6 +9,7 @@ use App\Http\Resources\Resident as ResidentResource;
 use App\Traits\Devices;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Inertia\Inertia;
 
 class ResidentController extends Controller
 {
@@ -17,15 +18,12 @@ class ResidentController extends Controller
   *
   * @return \Illuminate\Http\Response
   */
-  public function __construct(){
-    
-  }
 
   public function index(Extension $extension)
   {
-    $extension_id = $extension->id;
     $residents    = $extension->residents;
-    return view('admin.residents.index', compact('residents', 'extension'));
+    return Inertia::render('Residents/Residents', compact('extension', 'residents'));
+    // return view('admin.residents.index', compact('residents', 'extension'));
   }
 
   public function list(Request $request)
@@ -41,9 +39,10 @@ class ResidentController extends Controller
   *
   * @return \Illuminate\Http\Response
   */
-  public function create()
+  public function create(Request $request, Extension $extension)
   {
-    return view('residents.create');
+    $residents    = $extension->residents;
+    return Inertia::render('Residents/ResidentsForm', compact('extension', 'residents'));
   }
 
   /**
@@ -56,13 +55,14 @@ class ResidentController extends Controller
   public function store(StoreResidentRequest $request)
   {
     $request->validate([
-      'card' => 'nullable|unique:residents'
+      'name' => 'required',
+      'card' => 'nullable|unique:residents',
+      'age'  => 'required|integer|min:0'
     ]);
 
     $resident = Resident::create([
       'extension_id'    => $request->extension_id,
       'name'            => $request->name,
-      'email'           => $request->email,
       'age'             => $request->age,
       'dni'             => $request->dni,
       'is_owner'        => $request->is_owner,
@@ -70,7 +70,6 @@ class ResidentController extends Controller
       'is_authorized'   => $request->is_authorized,
       'disability'      => $request->disability,
       'card'            => $request->card,
-      'device_synced'   => false
     ]);
 
     $picturePath = null;
@@ -89,8 +88,7 @@ class ResidentController extends Controller
       }
     }
 
-    return new ResidentResource( $resident );
-
+    return to_route('extensions.residents.index', ['extension'=>$request->extension_id]);
   }
 
   /**
@@ -110,9 +108,9 @@ class ResidentController extends Controller
   * @param  \App\Resident  $resident
   * @return \Illuminate\Http\Response
   */
-  public function edit(Resident $resident)
+  public function edit(Extension $extension, Resident $resident)
   {
-    return view('residents.edit', ['resident' => $resident]);
+    return Inertia::render('Residents/ResidentsForm', compact('extension', 'resident'));
   }
 
   /**
@@ -122,7 +120,7 @@ class ResidentController extends Controller
   * @param  \App\Resident  $resident
   * @return \Illuminate\Http\Response
   */
-  public function update(StoreResidentRequest $request, Resident $resident)
+  public function update(Request $request, Resident $resident)
   {
     $request->validate([
       'name' => 'required',
@@ -130,7 +128,6 @@ class ResidentController extends Controller
     ]);
 
     $resident->name          = $request->name;
-    $resident->email         = $request->email;
     $resident->age           = $request->age;
     $resident->dni           = $request->dni;
     $resident->is_owner      = $request->is_owner;
@@ -140,7 +137,7 @@ class ResidentController extends Controller
     $resident->card          = $request->card;
 
     $path = $request->file('picture') ? $request->file('picture')->getPathName() : null;
-
+    
     if( $resident->extension->admin->device_building_id ){
       $devices    = new Devices();
       if( !$devices->updateResident($resident, $path) ){
@@ -149,8 +146,9 @@ class ResidentController extends Controller
     }
 
     if( $path ) $resident->addMedia($path)->toMediaCollection('picture');
+    
     $resident->save();
-    return new ResidentResource( $resident );
+    return to_route( 'extensions.residents.index', ['extension'=>$request->extension_id] );
   }
 
   /**
@@ -164,6 +162,6 @@ class ResidentController extends Controller
     $resident->delete();
     $devices = new Devices();
     $devices->deleteResident($resident);
-    return response()->json(['message'=>'Resident deleted successfuly']);
+    return to_route( 'extensions.residents.index', ['extension'=>$resident->extension_id] );
   }
 }

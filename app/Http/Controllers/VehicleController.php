@@ -6,6 +6,7 @@ use App\Extension;
 use App\Traits\Devices;
 use App\Vehicle;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class VehicleController extends Controller
 {
@@ -16,8 +17,10 @@ class VehicleController extends Controller
      */
     public function index(Extension $extension)
     {
-      $vehicles = $extension->vehicles;
-      $extension->load('residents');
+      $vehicles  = $extension->vehicles;
+      $vehicle   = null;
+      $residents = $extension->residents;
+      return Inertia::render('Vehicles/Vehicles', compact('extension', 'vehicles', 'residents', 'vehicle'));
       return view('admin.vehicles.index', compact('extension', 'vehicles'));
     }
 
@@ -28,8 +31,9 @@ class VehicleController extends Controller
      */
     public function create(Extension $extension)
     {
-      $extension->load('residents');
-      return view('admin.vehicles.create', compact('extension'));
+      $vehicle = null;
+      $residents = $extension->load('residents');
+      return view('admin.vehicles.create', compact('extension', 'residents', 'vehicle'));
     }
 
     /**
@@ -40,12 +44,18 @@ class VehicleController extends Controller
      */
     public function store(Extension $extension, Request $request)
     {
+        $request->validate([
+          'plate'       => 'required',
+          'type'        => 'required',
+          'resident_id' => 'required'
+        ]);
+        
         $vehicle = Vehicle::create($request->all());
-        $devices = new Devices();
         if( $resident = $vehicle->resident ){
+          $devices = new Devices();
           $devices->updateResident( $resident, null );
         }
-        return $vehicle;
+        return to_route('extensions.vehicles.index', ['extension'=>$extension->id]);
     }
 
     /**
@@ -94,6 +104,7 @@ class VehicleController extends Controller
     public function destroy(Vehicle $vehicle)
     {
       $vehicle->delete();
+      return to_route('extensions.vehicles.index', ['extension'=>$vehicle->extension_id]);
       return $vehicle;
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Invoice;
 use App\Clarisa;
+use Inertia\Inertia;
 
 class InvoiceController extends Controller
 {
@@ -16,6 +17,7 @@ class InvoiceController extends Controller
           }
           return $i;
       });
+      return Inertia::render('Invoices/Invoices', compact('invoices'));
       return view('admin.invoices.index', ['invoices' => $invoices]);
     }
 

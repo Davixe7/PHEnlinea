@@ -20,6 +20,7 @@ use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Inertia\Inertia;
 
 Route::view('cuenta', 'cuenta', ['admin'=>Admin::first()]);
 
@@ -46,7 +47,9 @@ Route::get('test', function () {
   return array_merge($visits, $plates);
 });
 
-Route::view('home', 'admin.home')->name('home');
+Route::get('home', function(){
+  return Inertia::render('Home');
+});
 
 Route::get('logout', function () {
   auth()->logout();

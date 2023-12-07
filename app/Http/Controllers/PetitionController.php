@@ -11,6 +11,7 @@ use App\WhatsappClient;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Storage;
+use Inertia\Inertia;
 
 class PetitionController extends Controller
 {
@@ -38,8 +39,8 @@ class PetitionController extends Controller
       return PetitionResource::collection(auth()->user()->petitions()->orderBy('created_at', 'DESC')->get());
     }
 
-    $pqrss = auth()->user()->petitions()->orderBy('created_at', 'DESC')->get();
-
+    $petitions = auth()->user()->petitions()->orderBy('created_at', 'DESC')->get();
+    return Inertia::render('Petitions', compact('petitions'));
     return view('admin.petitions.index', compact('pqrss'));
   }
 
@@ -90,7 +91,7 @@ class PetitionController extends Controller
   public function markAsRead(Petition $petition)
   {
     $petition->update(['read_at' => now(), 'status' => 'read']);
-    $this->notifyPetitionUpdate($petition);
+    // $this->notifyPetitionUpdate($petition);
     return new PetitionResource( $petition );
   }
 
@@ -141,7 +142,7 @@ class PetitionController extends Controller
     $this->notifyPetitionUpdate($petition);
 
     return $request->expectsJson()
-    ? response()->json(['data' => $petition])
+    ? to_route('petitions.index')
     : redirect()->route('pqrs.show', ['petition' => $petition])->with('Peticion actualizada con éxito');
   }
 

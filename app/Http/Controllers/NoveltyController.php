@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Novelty;
 use Illuminate\Http\Request;
 use App\Http\Resources\Novelty as NoveltyResource;
+use Inertia\Inertia;
 
 class NoveltyController extends Controller {
 
@@ -19,12 +20,12 @@ class NoveltyController extends Controller {
     public function index()
     {
       $novelties = auth()->user()->novelties()->orderBy('created_at', 'desc')->get();
+      return Inertia::render('Novelties', compact('novelties'));
       
       if( request()->expectsJson() ){
         return NoveltyResource::collection( $novelties );
       }
 
-      return view('admin.novelties', compact('novelties'));
     }
 
     /**

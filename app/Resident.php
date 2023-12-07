@@ -27,9 +27,9 @@ class Resident extends Model implements HasMedia
   protected $appends  = ['picture'];
   
   protected $casts = [
-    'is_owner'    => 'integer',
-    'is_resident' => 'integer',
-    'is_authorized' => 'integer',
+    'is_owner'    => 'boolean',
+    'is_resident' => 'boolean',
+    'is_authorized' => 'boolean',
     'disability' => 'integer'
   ];
 

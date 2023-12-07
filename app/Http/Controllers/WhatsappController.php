@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Inertia\Inertia;
 
 class WhatsappController extends Controller
 {
@@ -118,11 +119,15 @@ class WhatsappController extends Controller
     return response()->json($response);
   }
 
-  public function login(){
+  public function login(Request $request){
     $whatsapp      = new Whatsapp();
     $instance_id   = $whatsapp->getInstanceId();
-    $webook_status = $whatsapp->setWebHook( $instance_id, route('whatsapp.hook') );
+    if( !$request->retrying ){
+      $webook_status = $whatsapp->setWebHook( $instance_id, route('whatsapp.hook') );
+    }
     $base64        = $whatsapp->getQrCode( $instance_id );
+
+    return Inertia::render('Whatsapp/Login', compact('instance_id', 'base64'));
     return view('admin.whatsapp.login', compact('instance_id', 'base64'));
   }
 
@@ -132,6 +137,7 @@ class WhatsappController extends Controller
     $extensions           = auth()->user()->extensions()->orderBy('name')->get();
     $history              = auth()->user()->getBatches();
     $whatsapp_instance_id = auth()->user()->whatsapp_instance_id;
+    return Inertia::render('Whatsapp/Messages', compact('extensions', 'history', 'whatsapp_instance_id'));
     return view('admin.whatsapp.index', compact('extensions', 'history', 'whatsapp_instance_id'));
   }
 
@@ -237,6 +243,7 @@ class WhatsappController extends Controller
     Storage::append('batchs_messages_response.log', $response_body);
     $response = json_decode($response_body, true);
 
+    return to_route('whatsapp.index');
     return response()->json($response);
   }
 }
