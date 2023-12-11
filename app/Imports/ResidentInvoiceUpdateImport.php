@@ -28,11 +28,21 @@ class ResidentInvoiceUpdateImport implements ToCollection, WithHeadingRow
     foreach ($rows as $row) {
       $resident_invoice = ResidentInvoice::where('resident_invoice_batch_id', $this->batch->id)->where('apto', $row['apto'])->first();
 
-      $resident_invoice_payment = ResidentInvoicePayment::firstOrCreate([
+      if( $row['ultimo_pago'] > $resident_invoice->pending ){
+        $row['ultimo_pago'] = $resident_invoice->pending;
+      }
+
+      $data = [
         'resident_invoice_id' => $resident_invoice->id,
         'amount'              => $row['ultimo_pago'],
         'date'                => \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['fecha_ultimo_pago'])
-      ]);
+      ];
+
+      if( ResidentInvoicePayment::where($data)->exists() ){
+        return;
+      }
+
+      $resident_invoice_payment = ResidentInvoicePayment::create($data);
 
       $items   = $resident_invoice->resident_invoice_items()->with('resident_invoice_payments');
       $balance = $resident_invoice_payment->amount;

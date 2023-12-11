@@ -24,7 +24,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-      setlocale(LC_TIME, 'es_ES');
+      setlocale(LC_TIME, config('app.locale'));
       \Carbon\Carbon::setLocale('es');
 
       app()->bind('path.public', function(){

@@ -23,6 +23,7 @@
     "dependencies": {
         "@inertiajs/vue3": "^1.0.14",
         "@quasar/extras": "^1.16.9",
+        "@vueuse/core": "^10.7.0",
         "firebase": "^9.23.0",
         "laravel-vue-pagination": "^2.3.1",
         "quasar": "^2.14.1",

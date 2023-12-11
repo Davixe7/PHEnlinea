@@ -6,6 +6,7 @@ use App\Imports\ResidentInvoiceImport;
 use App\Imports\ResidentInvoiceUpdateImport;
 use App\ResidentInvoiceBatch;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ResidentInvoiceBatchController extends Controller
@@ -18,6 +19,7 @@ class ResidentInvoiceBatchController extends Controller
   public function index()
   {
     $resident_invoice_batches = auth()->user()->resident_invoice_batches()->withCount('resident_invoices')->get();
+    return Inertia::render('ResidentInvoices/Batches', ['batches'=>$resident_invoice_batches]);
     return view('admin.resident-invoice-batches.index', compact('resident_invoice_batches'));
   }
 
@@ -28,6 +30,7 @@ class ResidentInvoiceBatchController extends Controller
    */
   public function upload()
   {
+    return Inertia::render('ResidentInvoices/BatchForm');
     return view('admin.resident-invoice-batches.upload');
   }
 
@@ -46,6 +49,9 @@ class ResidentInvoiceBatchController extends Controller
     $file = $request->file('file');
     $path = $file->store('resident-invoices');
     Excel::import(new ResidentInvoiceImport($batch), $path);
+
+    return Inertia::render('ResidentInvoices/BatchForm', ['importedCount' => $batch->resident_invoices()->count()]);
+
     return response()->json([
       'count' => $batch->resident_invoices()->count()
     ]);
@@ -60,6 +66,7 @@ class ResidentInvoiceBatchController extends Controller
   public function show(ResidentInvoiceBatch $residentInvoiceBatch)
   {
     $residentInvoiceBatch->load('resident_invoices.resident_invoice_payments');
+    return Inertia::render('ResidentInvoices/Batch', ['batch'=>$residentInvoiceBatch]);
     return view('admin.resident-invoice-batches.show', ['resident_invoice_batch' => $residentInvoiceBatch]);
   }
 
@@ -88,6 +95,9 @@ class ResidentInvoiceBatchController extends Controller
     $path = $file->store('resident-invoices');
 
     Excel::import(new ResidentInvoiceUpdateImport($residentInvoiceBatch), $path);
+
+    return to_route('resident_invoice_batches.show', ['resident_invoice_batch'=>$residentInvoiceBatch->id]);
+
     return response()->json([
       'count' => $residentInvoiceBatch->resident_invoices()->count()
     ]);

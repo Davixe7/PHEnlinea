@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class ResidentInvoicePayment extends Model
 {
     use HasFactory;
+    protected $casts = [
+      'created_at' => 'date:Y-m-d'
+    ];
 
     protected $guarded = [];
 

@@ -52,6 +52,10 @@ class Extension extends Authenticatable implements HasMedia
     // 'parking_numbers_str'
   ];
 
+  public function resident_invoice_payments(){
+    return $this->hasManyThrough(ResidentInvoicePayment::class, ResidentInvoice::class);
+  }
+
   public function resident_invoices(){
     return $this->hasMany(ResidentInvoice::class);
   }

@@ -16,14 +16,10 @@ class ResidentInvoice extends Model
     'total'   => 'double',
     'paid'    => 'double',
     'pending' => 'double',
+    'created_at' => 'date:Y-m-d'
   ];
   
   protected $appends = ['total', 'paid', 'pending'];
-
-  protected $hidden  = [
-    'created_at',
-    'updated_at'
-  ];
 
   function resident_invoice_batch(){
     return $this->belongsTo(ResidentInvoiceBatch::class);
@@ -50,7 +46,8 @@ class ResidentInvoice extends Model
   }
 
   function getPendingAttribute(){
-    return $this->total - $this->paid;
+    $result = $this->total - $this->paid;
+    return $result <= 0 ? 0 : $result;
   }
 
   public function getPeriodoEsAttribute(){

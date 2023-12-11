@@ -15,14 +15,13 @@ use App\Admin;
 use App\Extension;
 use App\Http\Controllers\InvoiceController;
 use App\Resident;
+use App\ResidentInvoice;
 use App\ResidentInvoicePayment;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
-
-Route::view('cuenta', 'cuenta', ['admin'=>Admin::first()]);
 
 Route::get('devices/exportResidents', 'ZhyafController@exportResidents');
 Route::get('devices/exportRooms', 'ZhyafController@exportRooms');
@@ -165,6 +164,7 @@ Route::middleware(['auth:admin', 'phoneverified', 'suspended'])->group(function 
 
   Route::get('residents/list', 'ResidentController@list')->name('residents.list');
 
+  Route::get('extensions/{extension}/account-balance',            [App\Http\Controllers\ResidentInvoiceController::class, 'status']);
   Route::get('resident-invoice-batches',                          [App\Http\Controllers\ResidentInvoiceBatchController::class, 'index'] )->name('resident_invoice_batches.index');
   Route::get('resident-invoice-batches/upload',                   [App\Http\Controllers\ResidentInvoiceBatchController::class, 'upload'])->name('resident_invoice_batches.upload');
   Route::post('resident-invoice-batches/import',                  [App\Http\Controllers\ResidentInvoiceBatchController::class, 'import'])->name('resident_invoice_batches.import');
@@ -191,3 +191,4 @@ Route::view('consultar-facturas', 'public.resident-invoices.query');
 Route::post('consultar-facturas', [App\Http\Controllers\ResidentInvoiceController::class, 'apartmentInvoices'])->name('public.resident-invoices');
 Route::get('detalle-factura/{resident_invoice}', [App\Http\Controllers\ResidentInvoiceController::class, 'show']);
 Route::get('descargar-factura/{resident_invoice}', [App\Http\Controllers\ResidentInvoiceController::class, 'download'])->name('resident-invoices.download');
+Route::get('descargar-estado-cuenta/{extension}', [App\Http\Controllers\ResidentInvoiceController::class, 'downloadBalancePDF']);
