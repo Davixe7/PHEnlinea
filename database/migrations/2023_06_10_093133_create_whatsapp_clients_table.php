@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::create('whatsapp_clients', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->foreignId('user_id');
             $table->string('name');
             $table->string('base_url');
             $table->string('access_token');

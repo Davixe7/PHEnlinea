@@ -13,6 +13,7 @@ use App\Exports\ExtensionsExport;
 use App\Http\Controllers\Controller;
 use App\Traits\Uploads;
 use Illuminate\Support\Str;
+use Inertia\Inertia;
 
 class AdminController extends Controller
 {
@@ -25,6 +26,7 @@ class AdminController extends Controller
   public function index()
   {
     $admins = Admin::orderBy('name', 'asc')->get();
+    return Inertia::render('Admins', compact('admins'));
     return view('super.admins.index', compact('admins'));
   }
 
@@ -58,6 +60,7 @@ class AdminController extends Controller
       $admin->payments()->save( new Payment(['year'=>$year]) );
     }
 
+    return to_route('admin.admins.index');
     return new AdminResource( $admin );
   }
 
@@ -105,12 +108,14 @@ class AdminController extends Controller
       $admin->addMedia($file)->toMediaCollection('picture');
     }
 
+    return to_route('admin.admins.index');
     return new AdminResource( $admin );
   }
 
   public function destroy(Admin $admin)
   {
     $admin->delete();
+    return to_route('admin.admins.index');
     return response()->json(['message'=>'Admin deleted successfuly']);
   }
   

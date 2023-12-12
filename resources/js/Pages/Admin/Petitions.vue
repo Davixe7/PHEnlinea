@@ -216,13 +216,23 @@ const columns = [{
 ]
 
 function markAsRead(item) {
-  pqrs.value = { ...item }
+  pqrs.value = item
   if (pqrs.value.read_at != null) return
-  form.put(`pqrs/${pqrs.value.id}/markAsRead`)
+  let index = props.petitions.indexOf(item)
+  form.put(`pqrs/${pqrs.value.id}/markAsRead`, {
+    onSuccess: ()=>{
+      pqrs.value = props.petitions[index]
+    }
+  })
 }
 
 function reply() {
   let newForm = useForm({...pqrs.value})
-  newForm.put(`pqrs/${pqrs.value.id}`)
+  let index = props.petitions.indexOf(pqrs.value)
+  newForm.put(`pqrs/${pqrs.value.id}`, {
+    onSuccess: ()=>{
+      pqrs.value = props.petitions[index]
+    }
+  })
 }
 </script>

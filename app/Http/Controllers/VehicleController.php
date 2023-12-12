@@ -59,28 +59,6 @@ class VehicleController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Vehicle  $vehicle
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Vehicle $vehicle)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Vehicle  $vehicle
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Vehicle $vehicle)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -92,7 +70,7 @@ class VehicleController extends Controller
         $vehicle->update($request->all());
         $devices = new Devices();
         $devices->updateResident($vehicle->resident, null);
-        return $vehicle;
+        return to_route('extensions.vehicles.index', compact('extension'));
     }
 
     /**

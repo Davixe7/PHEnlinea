@@ -7,6 +7,7 @@ use App\Http\Requests\StoreUser as StoreUserRequest;
 use App\Http\Resources\User as UserResource;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Inertia\Inertia;
 
 class UserController extends Controller
 {
@@ -16,7 +17,8 @@ class UserController extends Controller
 
   public function index()
   {
-    return view('super.users.index', ['users' => UserResource::collection( User::all() )]);
+    $users = User::all();
+    return Inertia::render('Users', compact('users'));
   }
 
   public function store(StoreUserRequest $request)

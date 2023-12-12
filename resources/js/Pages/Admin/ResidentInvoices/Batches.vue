@@ -1,5 +1,7 @@
 <template>
   <q-table
+    class="q-mx-auto"
+    style="max-width: 800px"
     title="Lotes de facturación"
     :rows="batches"
     :columns="columns">

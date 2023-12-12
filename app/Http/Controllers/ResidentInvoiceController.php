@@ -83,39 +83,45 @@ class ResidentInvoiceController extends Controller
     $to          = $request->to   ?: Carbon::now()->addDay()->format('Y-m-d');
 
     $invoices    = $extension->resident_invoices()->whereBetween('created_at', [$from, $to])->get();
-
-    $invoice_ids = $invoices->pluck('id')->toArray();
+    $invoice_ids = $invoices->pluck('id');
 
     $payments    = ResidentInvoicePayment::whereIn('resident_invoice_id', $invoice_ids)
                   ->whereBetween('created_at', [$from, $to])
-                  ->get(['id', 'resident_invoice_id', 'amount as total', 'created_at'])
-                  ->toArray();
+                  ->get(['id', 'resident_invoice_id', 'amount as total', 'created_at']);
 
-    $rows = array_merge($invoices->toArray(), $payments);
+    $deuda = $invoices->reduce(fn($carry, $invoice)=> $carry + $invoice->total, 0);
+    $abono = $payments->reduce(fn($carry, $payment)=> $carry + $payment->total, 0);
+    $total = $deuda - $abono;
+
+    $rows = array_merge($invoices->toArray(), $payments->toArray());
     
     usort($rows, function ($a, $b) {
       return strtotime($a['created_at']) - strtotime($b['created_at']);
     });
 
-    return Inertia::render('ResidentInvoices/AccountStatus', compact('from', 'to', 'extension', 'rows'));
+    return Inertia::render('ResidentInvoices/AccountStatus', compact('from', 'to', 'extension', 'rows', 'total'));
   }
 
   function downloadBalancePDF(Request $request, Extension $extension){
     $from        = $request->from ?: Carbon::now()->startOfYear()->format('Y-m-d');
     $to          = $request->to   ?: Carbon::now()->addDay()->format('Y-m-d');
     $invoices    = $extension->resident_invoices()->whereBetween('created_at', [$from, $to])->get();
-    $invoice_ids = $invoices->pluck('id')->toArray();
+    $invoice_ids = $invoices->pluck('id');
     $payments    = ResidentInvoicePayment::whereIn('resident_invoice_id', $invoice_ids)
                   ->whereBetween('created_at', [$from, $to])
-                  ->get(['id', 'resident_invoice_id', 'amount as total', 'created_at'])
-                  ->toArray();
-    $rows = array_merge($invoices->toArray(), $payments);
+                  ->get(['id', 'resident_invoice_id', 'amount as total', 'created_at']);
+
+    $deuda = $invoices->reduce(fn($carry, $invoice)=> $carry + $invoice->total, 0);
+    $abono = $payments->reduce(fn($carry, $payment)=> $carry + $payment->total, 0);
+    $total = $deuda - $abono;
+
+    $rows = array_merge($invoices->toArray(), $payments->toArray());
     
     usort($rows, function ($a, $b) {
       return strtotime($a['created_at']) - strtotime($b['created_at']);
     });
 
-    $pdf = Pdf::loadView('pdf.balance', compact('extension', 'rows', 'from', 'to'));
+    $pdf = Pdf::loadView('pdf.balance', compact('extension', 'rows', 'from', 'to', 'total'));
     return $pdf->stream();
     return $pdf->download('edo_cta.pdf');
   }

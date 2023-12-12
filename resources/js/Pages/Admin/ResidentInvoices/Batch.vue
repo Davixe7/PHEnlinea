@@ -28,7 +28,7 @@
 
       <q-btn
         flat
-        :href="`/descargar-factura/${props.row.id}`"
+        :href="`/descargar-estado-cuenta/${props.row.id}`"
         target="_blank">
         Edo. Cta
       </q-btn>

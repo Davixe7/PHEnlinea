@@ -10,6 +10,7 @@ use App\Http\Requests\StorePorteria as StorePorteriaRequest;
 use App\Http\Controllers\Controller;
 use Rap2hpoutre\FastExcel\FastExcel;
 use Illuminate\Support\Facades\DB;
+use Inertia\Inertia;
 
 class PorteriaController extends Controller
 {
@@ -28,6 +29,7 @@ class PorteriaController extends Controller
     $porterias = Porteria::orderBy('created_at', 'DESC')->with('admin')->get();
     $admins    = Admin::orderBy('id', 'ASC')->get();
 
+    return Inertia::render('Porterias', compact('porterias', 'admins'));
     return view('super.porterias.index', compact('porterias', 'admins'));
   }
   
@@ -55,7 +57,8 @@ class PorteriaController extends Controller
       'password' => bcrypt( $request->password ),
       'admin_id' => $request->admin_id
     ]);
-    
+
+    return to_route('admin.porterias.index');
     return new PorteriaResource( $porteria->load('admin') );
   }
   
@@ -111,7 +114,8 @@ class PorteriaController extends Controller
       'email'    => $request->email,
       'password' => $request->password ? bcrypt( $request->password ) : $porteria->password
     ]);
-    
+
+    return to_route('admin.porterias.index');
     return new PorteriaResource( $porteria->load('admin') );
   }
   
@@ -124,6 +128,7 @@ class PorteriaController extends Controller
   public function destroy(Porteria $porteria)
   {
     $porteria->delete();
+    return to_route('admin.porterias.index');
     return response()->json(['message'=>'Succesful deletion']);
   }
 }

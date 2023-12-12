@@ -72,7 +72,7 @@
         >
         <template v-slot:body-cell-actions="props">
           <q-td>
-            <q-btn flat @click="" icon="sym_o_edit"></q-btn>
+            <q-btn flat @click="setVehicle(props.row)" icon="sym_o_edit"></q-btn>
             <q-btn flat @click="destroy(props.row.id)" icon="sym_o_delete"></q-btn>
           </q-td>
         </template>
@@ -99,24 +99,41 @@ const columns = ref([
   {name: 'actions', align: 'right'},
 ])
 
-const form = useForm(props.vehicle ? {...props.vehicle} : {
+const defaultVehicle = {
   type: 'car',
   plate: '',
   tag: '',
   id: null,
   resident_id: null,
   extension_id: props.extension.id
-})
+}
+const form = useForm(props.vehicle ? {...props.vehicle} : {...defaultVehicle})
+
+function setVehicle(vehicle){
+  form.defaults({...vehicle})
+  form.reset()
+}
+
+function clearForm(){
+  form.defaults({...defaultVehicle})
+  form.reset()
+}
 
 function store() {
   if( !form.id ){
     form.post(`/extensions/${props.extension.id}/vehicles`, {
-      onSuccess:()=>$q.notify('Registrado con éxito')
+      onSuccess:()=>{
+        $q.notify('Registrado con éxito')
+        clearForm()
+      }
     })
     return
   }
   form.put(`/extensions/${props.extension.id}/vehicles/${form.id}`, {
-    onSuccess:()=>$q.notify('Actualizado con éxito')
+    onSuccess:()=>{
+      $q.notify('Actualizado con éxito')
+      clearForm()
+    }
   })
 }
 

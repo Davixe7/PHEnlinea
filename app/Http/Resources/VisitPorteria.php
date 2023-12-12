@@ -12,6 +12,8 @@ class VisitPorteria extends JsonResource
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
+
+    public static $wrap = null;
     public function toArray($request)
     {
       return [

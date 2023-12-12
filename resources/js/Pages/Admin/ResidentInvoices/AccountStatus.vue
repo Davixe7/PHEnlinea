@@ -1,5 +1,7 @@
 <template>
   <q-table
+    style="max-width: 800px;"
+    class="q-mx-auto"
     flat
     bordered
     title="Estado de cuenta"
@@ -80,11 +82,16 @@
         </q-td>
       </q-tr>
     </template>
+    <q-tr>
+      <q-td colspan="3"></q-td>
+      <q-td>Total</q-td>
+      <q-td>{{ total }}</q-td>
+    </q-tr>
   </q-table>
 </template>
 
 <script setup>
-import { useForm } from '@inertiajs/vue3';
+import { router, useForm } from '@inertiajs/vue3';
 import {useDateFormat} from '@vueuse/core'
 import {computed} from 'vue'
 const props = defineProps([
@@ -92,6 +99,7 @@ const props = defineProps([
   'to',
   'extension',
   'rows',
+  'total',
   'errors',
   'user'
 ])
@@ -107,6 +115,10 @@ function fetchBalance(){
     to: data.to.replaceAll('/', '-')
   }))
   form.get(`/extensions/${props.extension.id}/account-balance`)
+}
+
+function downloadPDF(){
+  window.location.href = `/descargar-estado-cuenta/${props.extension.id}`
 }
 
 const columns = [

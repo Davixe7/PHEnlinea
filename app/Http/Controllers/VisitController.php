@@ -15,6 +15,8 @@ class VisitController extends Controller
     public function index()
     {
       $visits = auth()->user()->visits()->orderBy('created_at', 'DESC')->with('visitor')->get();
+      $visits = VisitPorteria::collection( $visits )->collection;
+      // return $visits;
       return Inertia::render('Visitors', compact('visits'));
       return view('admin.visits', ['visits' => $visits]);
     }

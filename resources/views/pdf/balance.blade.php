@@ -204,7 +204,7 @@
         </td>
         <td style="text-align: right;">
           <b>
-            $ 999.999
+            $ {{$total}}
           </b>
         </td>
       </tr>

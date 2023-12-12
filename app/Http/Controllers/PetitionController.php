@@ -20,7 +20,7 @@ class PetitionController extends Controller
 
   public function __construct()
   {
-    $this->client = WhatsappClient::where('enabled', 1)->first();
+    $this->client = WhatsappClient::where('enabled', 1)->firstOrFail();
     //$this->middleware('modules:requests');
     $this->api = new Client([
       'base_uri' => $this->client->base_url,
@@ -51,6 +51,7 @@ class PetitionController extends Controller
    */
   public function create(Admin $admin, Request $request)
   {
+    return Inertia::render('Pqrs', compact('admin'));
     return view('public.pqrs.create', ['admin' => $admin]);
   }
 
@@ -83,7 +84,9 @@ class PetitionController extends Controller
       }
     }
 
-    $this->notifyPetitionUpdate($petition);
+    //$this->notifyPetitionUpdate($petition);
+
+    return to_route('pqrs.create', ['admin'=>$request->admin_id]);
 
     return redirect()->route('pqrs.create', ['admin' => $request->admin_id])->with(['message' => 'Petición creada con éxito']);
   }
@@ -91,6 +94,7 @@ class PetitionController extends Controller
   public function markAsRead(Petition $petition)
   {
     $petition->update(['read_at' => now(), 'status' => 'read']);
+    return to_route('pqrs.index');
     // $this->notifyPetitionUpdate($petition);
     return new PetitionResource( $petition );
   }
@@ -139,8 +143,8 @@ class PetitionController extends Controller
       }
     }
 
-    $this->notifyPetitionUpdate($petition);
-
+    //$this->notifyPetitionUpdate($petition);
+    return to_route('petitions.index');
     return $request->expectsJson()
     ? to_route('petitions.index')
     : redirect()->route('pqrs.show', ['petition' => $petition])->with('Peticion actualizada con éxito');

@@ -56,6 +56,7 @@ class ResidentController extends Controller
   {
     $request->validate([
       'name' => 'required',
+      'dni'  => 'required',
       'card' => 'nullable|unique:residents',
       'age'  => 'required|integer|min:0'
     ]);

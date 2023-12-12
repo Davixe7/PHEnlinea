@@ -20,9 +20,9 @@
   const search  = ref('')
   const columns = ref([
     {name: 'picture', label: 'Foto', align: 'left'},
-    {name: 'name', label: 'Nombre', field: row => row.visitor.name, align: 'left'},
-    {name: 'dni', label: 'Cédula', field: row => row.visitor.dni, align: 'left'},
-    {name: 'company', label: 'Compañia', field: row => row.visitor.company, align: 'left'},
+    {name: 'name', label: 'Nombre', field: row => row.name, align: 'left'},
+    {name: 'dni', label: 'Cédula', field: row => row.dni, align: 'left'},
+    {name: 'company', label: 'Compañia', field: row => row.company, align: 'left'},
     {name: 'extension_name', field: row => row.extension_name, label: 'Apto', align: 'left'},
     {name: 'arl_eps', field: 'arl_eps', label: 'ARL - EPS', align: 'left'},
     {name: 'checkin', field: 'checkin', label: 'Checkin', align: 'left'},
