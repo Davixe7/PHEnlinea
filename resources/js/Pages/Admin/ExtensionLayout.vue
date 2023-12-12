@@ -23,7 +23,7 @@
       name="vehicles"  icon="sym_o_directions_car" label="Vehículos" :disable="!extension || !extension.id"/>
 
     <q-tab
-      @click="router.visit(extension ? `/descargar-estado-cuenta/${extension.id}` : '')"
+      @click="router.visit(extension ? `/extensions/${extension.id}/invoices` : '')"
       name="balance"
       icon="sym_o_receipt_long"
       label="Facturación"

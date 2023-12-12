@@ -87,7 +87,13 @@ class WhatsappController extends Controller
       'type'    => 'comunity',
     ]]); 
     $history  = json_decode($response->getBody())->data;
+
     $mode = 'comunity';
+    $whatsapp_instance_id  = auth()->user()->whatsapp_instance_id;
+    $whatsapp_group_qr_url = auth()->user()->getFirstMediaUrl('whatsapp_qr');
+    $whatsapp_group_url    = auth()->user()->whatsapp_group_url;
+
+    return Inertia::render('Whatsapp/Messages', compact('mode', 'whatsapp_instance_id', 'whatsapp_group_qr_url', 'whatsapp_group_url'));
     return view('admin.whatsapp.comunity', compact('history', 'mode'));
   }
 

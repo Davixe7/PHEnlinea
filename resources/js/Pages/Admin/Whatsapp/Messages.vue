@@ -1,6 +1,32 @@
 <template>
   <div class="row">
-    <div class="col-md-3">
+    <div v-if="mode=='comunity'" class="col-md-3 q-px-md">
+      <q-card class="bg-blue-2 text-blue-8">
+        <q-card-section>
+          <div class="text-weight-medium">
+            Comunidad QR
+          </div>
+        </q-card-section>
+        <q-card-section>
+          Los mensajes que envíe a traves de este panel seran recibidos por los miembros del grupo de WhatsApp de su comunidad QR
+        </q-card-section>
+        <q-card-actions>
+          <q-btn
+            @click="navigator.clipboard.writeText(whatsapp_group_url)"
+            flat
+            icon="sym_o_link">
+            Copiar Link
+          </q-btn>
+          <q-btn
+            :href="whatsapp_group_qr_url"
+            flat
+            icon="sym_o_qr_code">
+            Descargar QR
+          </q-btn>
+        </q-card-actions>
+      </q-card>
+    </div>
+    <div v-else class="col-md-3">
       <div>
         Selecciona destinatarios
       </div>
@@ -63,7 +89,7 @@
       <q-table bordered flat :rows="rows" :columns="columns"></q-table>
     </div>
 
-    <div class="col-md-3 column items-end q-pa-md">
+    <div v-if="mode != 'comunity'" class="col-md-3 column items-end q-pa-md">
       <div class="flex items-center q-mb-sm">
         <span class="lightbulb lightbulb--on"></span>
         <div class="q-ml-sm inline-block">
@@ -82,10 +108,17 @@
 
 <script setup>
 import { useForm } from '@inertiajs/vue3';
-import {useQuasar} from 'quasar'
-import { watch, ref, computed } from 'vue';
+import { useQuasar} from 'quasar'
+import { ref, computed } from 'vue';
 
-const props = defineProps(['extensions', 'mode', 'whatsapp_instance_id'])
+const props = defineProps([
+'mode',
+'extensions',
+'whatsapp_instance_id',
+'whatsapp_group_url',
+'whatsapp_group_qr_url',
+])
+
 const form  = useForm({
   receivers: [],
   message: '',
@@ -126,12 +159,14 @@ function send() {
   if ((props.mode != 'comunity') && !form.receivers.length) { alert('Debe incluir al menos un destinatario'); return; }
   if (!form.message) { alert('Debe incluir un mensaje'); return; }
 
-  form.post('whatsapp/send', {
-    onSuccess:()=>{
-      form.reset()
-      $q.notify('Mensaje enviado exitosamente')
-    }
-  })
+  let url = props.mode == 'comunity' ? 'whatsapp/comunity' : 'whatsapp/send'
+  form.post(url, {
+  onSuccess:()=>{
+    form.reset()
+    $q.notify('Mensaje enviado exitosamente')
+  }
+})
+  
 }
 </script>
 

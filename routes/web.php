@@ -125,6 +125,7 @@ Route::name('admin.')->prefix('admin')->middleware('auth:web')->group(function (
   Route::get('porterias/export', 'Admin\PorteriaController@export');
   Route::resource('porterias',   'Admin\PorteriaController');
   Route::resource('extensions',  'ExtensionController');
+  Route::get('/extensions/{extensions}/invoices', 'ResidentInvoiceController@status');
 
   Route::get('admins/{admin}/export/', 'ExportController@exportCensus');
   Route::get('export/admins', 'ExportController@exportAdmins')->name('admins.export');
@@ -149,7 +150,7 @@ Route::middleware(['auth:admin', 'phoneverified', 'suspended'])->group(function 
   Route::resource('extensions', 'ExtensionController');
   Route::prefix('extensions/{extension}')->name('extensions.')->group(function(){
     Route::resource('residents', 'ResidentController');
-    Route::get('invoices', 'ResidentInvoiceController@index');
+    Route::get('invoices', 'ResidentInvoiceController@status');
   });
 
   Route::resource('residents', 'ResidentController');

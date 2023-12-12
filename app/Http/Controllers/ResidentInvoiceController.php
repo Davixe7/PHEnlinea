@@ -75,7 +75,7 @@ class ResidentInvoiceController extends Controller
     $admin     = Admin::whereNit($request->nit)->firstOrFail();
     $apto      = $admin->extensions()->whereName( $request->apto )->firstOrFail();
     $invoices  = $apto->resident_invoices;
-    return view('public.resident-invoices.index', compact('invoices'));
+    //return view('public.resident-invoices.index', compact('invoices'));
   }
 
   public function status(Extension $extension, Request $request){
@@ -99,7 +99,7 @@ class ResidentInvoiceController extends Controller
       return strtotime($a['created_at']) - strtotime($b['created_at']);
     });
 
-    return Inertia::render('ResidentInvoices/AccountStatus', compact('from', 'to', 'extension', 'rows', 'total'));
+    return Inertia::render('Extensions/AccountStatus', compact('from', 'to', 'extension', 'rows', 'total'));
   }
 
   function downloadBalancePDF(Request $request, Extension $extension){
