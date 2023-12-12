@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Traits\Whatsapp;
 use Illuminate\Support\Facades\DB;
+use Inertia\Inertia;
 
 class WhatsappClientController extends Controller
 {
@@ -15,7 +16,8 @@ class WhatsappClientController extends Controller
   }
 
   public function index(){
-    $whatsapp_clients = WhatsappClient::all();
+    $clients = WhatsappClient::all();
+    return Inertia::render('WhatsappClients', compact('clients'));
     return view('super.whatsappclients.index', compact('whatsapp_clients'));
   }
 
@@ -29,6 +31,14 @@ class WhatsappClientController extends Controller
     $whatsapp      = new Whatsapp();
     $instance_id   = $whatsapp->getInstanceId();
     $base64        = $whatsapp->getQrCode( $instance_id );
+
+    return Inertia::render('WhatsappClientScan', compact(
+      'whatsapp_client',
+      'instance_id',
+      'base64',
+      'instance_type',
+      'labels'
+    ));
 
     return view('super.whatsappclients.scan', compact(
       'whatsapp_client',

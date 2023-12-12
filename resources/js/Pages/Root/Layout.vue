@@ -24,7 +24,7 @@
         <q-route-tab href="/admin/admins" label="Administradores" />
         <q-route-tab href="/admin/porterias" label="Porterias" />
         <q-route-tab href="/admin/invoices/upload" label="Facturas" />
-        <q-route-tab href="/admin/whatsapp" label="Whatsapp" />
+        <q-route-tab href="/admin/whatsapp_clients" label="Whatsapp" />
       </q-tabs>
     </q-header>
 
