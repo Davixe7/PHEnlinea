@@ -1,0 +1,116 @@
+{
+  "_QPageSticky-acfe4619.js": {
+    "file": "assets/QPageSticky-acfe4619.js",
+    "imports": [
+      "_index-4e555683.js"
+    ]
+  },
+  "_QRouteTab-c821c032.js": {
+    "file": "assets/QRouteTab-c821c032.js",
+    "imports": [
+      "_index-4e555683.js"
+    ]
+  },
+  "_index-4e555683.js": {
+    "assets": [
+      "assets/KFOkCnqEu92Fr1MmgVxIIzQ-34e9582c.woff",
+      "assets/KFOlCnqEu92Fr1MmSU5fBBc--bf14c7d7.woff",
+      "assets/KFOmCnqEu92Fr1Mu4mxM-f2abf7fb.woff",
+      "assets/KFOlCnqEu92Fr1MmEU9fBBc--9ce7f3ac.woff",
+      "assets/KFOlCnqEu92Fr1MmWUlfBBc--e0fd57c0.woff",
+      "assets/KFOlCnqEu92Fr1MmYUtfBBc--f6537e32.woff",
+      "assets/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ-4a4dbc62.woff2",
+      "assets/flUhRq6tzZclQEJ-Vdg-IuiaDsNa-fd84f88b.woff",
+      "assets/kJEhBvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oFsLjBuVY-2d2b16e4.woff2",
+      "assets/kJF1BvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oDMzByHX9rA6RzaxHMPdY43zj-jCxv3fzvRNU22ZXGJpEpjC_1p-p_4MrImHCIJIZrDCvHeel-e5120202.woff"
+    ],
+    "css": [
+      "assets/index-da6eb0d3.css"
+    ],
+    "file": "assets/index-4e555683.js"
+  },
+  "index.css": {
+    "file": "assets/index-da6eb0d3.css",
+    "src": "index.css"
+  },
+  "node_modules/@quasar/extras/material-icons/web-font/flUhRq6tzZclQEJ-Vdg-IuiaDsNa.woff": {
+    "file": "assets/flUhRq6tzZclQEJ-Vdg-IuiaDsNa-fd84f88b.woff",
+    "src": "node_modules/@quasar/extras/material-icons/web-font/flUhRq6tzZclQEJ-Vdg-IuiaDsNa.woff"
+  },
+  "node_modules/@quasar/extras/material-icons/web-font/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2": {
+    "file": "assets/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ-4a4dbc62.woff2",
+    "src": "node_modules/@quasar/extras/material-icons/web-font/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2"
+  },
+  "node_modules/@quasar/extras/material-symbols-outlined/web-font/kJEhBvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oFsLjBuVY.woff2": {
+    "file": "assets/kJEhBvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oFsLjBuVY-2d2b16e4.woff2",
+    "src": "node_modules/@quasar/extras/material-symbols-outlined/web-font/kJEhBvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oFsLjBuVY.woff2"
+  },
+  "node_modules/@quasar/extras/material-symbols-outlined/web-font/kJF1BvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oDMzByHX9rA6RzaxHMPdY43zj-jCxv3fzvRNU22ZXGJpEpjC_1p-p_4MrImHCIJIZrDCvHeel.woff": {
+    "file": "assets/kJF1BvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oDMzByHX9rA6RzaxHMPdY43zj-jCxv3fzvRNU22ZXGJpEpjC_1p-p_4MrImHCIJIZrDCvHeel-e5120202.woff",
+    "src": "node_modules/@quasar/extras/material-symbols-outlined/web-font/kJF1BvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oDMzByHX9rA6RzaxHMPdY43zj-jCxv3fzvRNU22ZXGJpEpjC_1p-p_4MrImHCIJIZrDCvHeel.woff"
+  },
+  "node_modules/@quasar/extras/roboto-font/web-font/KFOkCnqEu92Fr1MmgVxIIzQ.woff": {
+    "file": "assets/KFOkCnqEu92Fr1MmgVxIIzQ-34e9582c.woff",
+    "src": "node_modules/@quasar/extras/roboto-font/web-font/KFOkCnqEu92Fr1MmgVxIIzQ.woff"
+  },
+  "node_modules/@quasar/extras/roboto-font/web-font/KFOlCnqEu92Fr1MmEU9fBBc-.woff": {
+    "file": "assets/KFOlCnqEu92Fr1MmEU9fBBc--9ce7f3ac.woff",
+    "src": "node_modules/@quasar/extras/roboto-font/web-font/KFOlCnqEu92Fr1MmEU9fBBc-.woff"
+  },
+  "node_modules/@quasar/extras/roboto-font/web-font/KFOlCnqEu92Fr1MmSU5fBBc-.woff": {
+    "file": "assets/KFOlCnqEu92Fr1MmSU5fBBc--bf14c7d7.woff",
+    "src": "node_modules/@quasar/extras/roboto-font/web-font/KFOlCnqEu92Fr1MmSU5fBBc-.woff"
+  },
+  "node_modules/@quasar/extras/roboto-font/web-font/KFOlCnqEu92Fr1MmWUlfBBc-.woff": {
+    "file": "assets/KFOlCnqEu92Fr1MmWUlfBBc--e0fd57c0.woff",
+    "src": "node_modules/@quasar/extras/roboto-font/web-font/KFOlCnqEu92Fr1MmWUlfBBc-.woff"
+  },
+  "node_modules/@quasar/extras/roboto-font/web-font/KFOlCnqEu92Fr1MmYUtfBBc-.woff": {
+    "file": "assets/KFOlCnqEu92Fr1MmYUtfBBc--f6537e32.woff",
+    "src": "node_modules/@quasar/extras/roboto-font/web-font/KFOlCnqEu92Fr1MmYUtfBBc-.woff"
+  },
+  "node_modules/@quasar/extras/roboto-font/web-font/KFOmCnqEu92Fr1Mu4mxM.woff": {
+    "file": "assets/KFOmCnqEu92Fr1Mu4mxM-f2abf7fb.woff",
+    "src": "node_modules/@quasar/extras/roboto-font/web-font/KFOmCnqEu92Fr1Mu4mxM.woff"
+  },
+  "resources/js/app.css": {
+    "file": "assets/app-316a4bb2.css",
+    "src": "resources/js/app.css"
+  },
+  "resources/js/app.js": {
+    "css": [
+      "assets/app-316a4bb2.css"
+    ],
+    "file": "assets/app-3090ab43.js",
+    "imports": [
+      "_index-4e555683.js",
+      "_QPageSticky-acfe4619.js"
+    ],
+    "isEntry": true,
+    "src": "resources/js/app.js"
+  },
+  "resources/js/public.js": {
+    "file": "assets/public-eb3a1693.js",
+    "imports": [
+      "_index-4e555683.js",
+      "_QRouteTab-c821c032.js"
+    ],
+    "isEntry": true,
+    "src": "resources/js/public.js"
+  },
+  "resources/js/root.js": {
+    "file": "assets/root-e5cde327.js",
+    "imports": [
+      "_index-4e555683.js",
+      "_QPageSticky-acfe4619.js",
+      "_QRouteTab-c821c032.js"
+    ],
+    "isEntry": true,
+    "src": "resources/js/root.js"
+  },
+  "resources/scss/app.scss": {
+    "file": "assets/app-4ed993c7.js",
+    "isEntry": true,
+    "src": "resources/scss/app.scss"
+  }
+}

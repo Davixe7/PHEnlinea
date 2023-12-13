@@ -20,12 +20,7 @@ class PetitionController extends Controller
 
   public function __construct()
   {
-    $this->client = WhatsappClient::where('enabled', 1)->firstOrFail();
-    //$this->middleware('modules:requests');
-    $this->api = new Client([
-      'base_uri' => $this->client->base_url,
-      'verify' => false
-    ]);
+    $this->client = WhatsappClient::whereEnabled(1)->firstOrFail();
   }
 
   /**
@@ -84,7 +79,7 @@ class PetitionController extends Controller
       }
     }
 
-    //$this->notifyPetitionUpdate($petition);
+    $this->notifyPetitionUpdate($petition);
 
     return to_route('pqrs.create', ['admin'=>$request->admin_id]);
 
@@ -95,7 +90,7 @@ class PetitionController extends Controller
   {
     $petition->update(['read_at' => now(), 'status' => 'read']);
     return to_route('pqrs.index');
-    // $this->notifyPetitionUpdate($petition);
+    $this->notifyPetitionUpdate($petition);
     return new PetitionResource( $petition );
   }
 
@@ -143,7 +138,7 @@ class PetitionController extends Controller
       }
     }
 
-    //$this->notifyPetitionUpdate($petition);
+    $this->notifyPetitionUpdate($petition);
     return to_route('petitions.index');
     return $request->expectsJson()
     ? to_route('petitions.index')
@@ -209,15 +204,13 @@ class PetitionController extends Controller
   }
 
   public function notifyPetitionUpdate($petition){
-    $data = [
-      'access_token' => $this->client->access_token,
-      'instance_id'  => $this->client->delivery_instance_id,
-      'number'       => ($petition->phone == '4147912134') ? '584147912134' : '57' . $petition->phone,
-      'message'      => $this->getMessage($petition),
-      'type'         => 'text'
-    ];
-
-    $response = $this->api->get('send', ['query'=>$data]);
+    $response = $this->api->send(
+      $this->client->delivery_instance_id,
+      '57' . $petition->phone,
+      $this->getMessage($petition),
+      null,
+      null
+    );
     Storage::append('pqrs.log', $response->getBody());
   }
 }

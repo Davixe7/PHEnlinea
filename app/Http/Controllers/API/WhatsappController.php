@@ -37,7 +37,7 @@ class WhatsappController extends Controller
       }
     }
 
-    $client = WhatsappClient::where('enabled', 1)->first();
+    $client = WhatsappClient::whereEnabled(1)->first();
     $api    = new Whatsapp();
 
     $instance_id = $client->delivery_instance_id;

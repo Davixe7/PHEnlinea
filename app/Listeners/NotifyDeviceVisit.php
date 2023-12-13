@@ -42,8 +42,8 @@ class NotifyDeviceVisit implements ShouldQueue
       if( !$event->visit->admin->device_serial_number ){ return; }
       Storage::append('devices.log', 'Sending message: ' . $this->getMessage($event->visit));
 
-      $api    = new Whatsapp();
       $client = WhatsappClient::whereEnabled(1)->firstOrFail();
+      $api    = new Whatsapp();
 
       $api->send(
         $client->delivery_instance_id,

@@ -15,6 +15,7 @@ export default defineConfig({
               'resources/js/public.js'
             ],
             refresh: true,
+            publicDirectory: './../public_html/dev.phenlinea.com/'
         }),
     ],
 });
