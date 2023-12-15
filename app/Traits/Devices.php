@@ -144,7 +144,9 @@ class Devices
 
     if( $resident->vehicles()->count() ){
       $tags = implode(',', $resident->vehicles()->pluck('tag')->toArray());
-      $multipart[5]['contents'] = $multipart[5]['contents'] . ',' . $tags;
+      $multipart[5]['contents'] = $resident->card
+                                                  ? $resident->card . ',' . $tags
+                                                  : $tags;
     }
 
     if( $picturePath ){

@@ -113,6 +113,7 @@ import { ref, computed } from 'vue';
 
 const props = defineProps([
 'mode',
+'messages',
 'extensions',
 'whatsapp_instance_id',
 'whatsapp_group_url',
@@ -124,11 +125,7 @@ const form  = useForm({
   message: '',
   attachment: null
 })
-const rows = ref([
-  {id: 1, message: 'Lorem ipsum dolor sit amet...', created_at: '2023-12-10', numbers: '4147912134,4147942833'},
-  {id: 2, message: 'Lorem ipsum dolor sit amet...', created_at: '2023-12-10', numbers: '4147912134,4147942833'},
-  {id: 3, message: 'Lorem ipsum dolor sit amet...', created_at: '2023-12-10', numbers: '4147912134,4147942833'},
-]);
+const rows = ref([...props.messages]);
 const columns = ref([
   {name: 'id', field: 'id', label: 'ID', align: 'left'},
   {name: 'message', field: 'message', label: 'Resumen', align: 'left'},
