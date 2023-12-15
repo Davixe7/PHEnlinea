@@ -1,10 +1,16 @@
 <template>
+  <q-card class="q-mb-md">
+    <q-card-section>
+      <q-btn flat round icon="sym_o_arrow_back"></q-btn>
+    </q-card-section>
+  </q-card>
   <q-table
     hide-bottom
     title="Apartamentos"
     :filter="search"
     :rows="rows"
-    :columns="columns">
+    :columns="columns"
+    :pagination="{rowsPerPage: 0}">
     <template v-slot:top-right>
         <q-input outlined dense debounce="300" v-model="search" placeholder="Buscar">
             <template v-slot:append>

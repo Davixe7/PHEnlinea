@@ -1,7 +1,5 @@
 <template>
-  <div class="q-pa-lg">
-  <div class="container">
-    <div class="row">
+  <div class="row">
       <div class="col">
 
         <q-table
@@ -60,8 +58,6 @@
         </q-card>
       </div>
     </div>
-  </div>
-</div>
 </template>
 
 <style>

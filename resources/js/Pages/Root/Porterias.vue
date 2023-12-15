@@ -4,7 +4,10 @@
     title="Porterias"
     :filter="search"
     :rows="porterias"
-    :columns="columns">
+    :columns="columns"
+    :pagination="{
+      rowsPerPage: 0
+    }">
     <template v-slot:top-right>
       <q-input borderless dense debounce="300" v-model="search" placeholder="Buscar...">
         <template v-slot:append>
@@ -99,7 +102,7 @@ import { ref } from 'vue';
 
   const props = defineProps(['admins', 'porterias', 'errors', 'user']);
   const columns = ref([
-    {name: 'admin', field: row => row.admin.name, label: 'Administrador', align: 'left'},
+    {name: 'admin', field: row => row?.admin?.name, label: 'Administrador', align: 'left'},
     {name: 'name', field: 'name', label: 'Nombre', align: 'left'},
     {name: 'email', field: 'email', label: 'Email', align: 'left'},
     {name: 'actions', align: 'right'},

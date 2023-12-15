@@ -73,7 +73,8 @@ function deleteAdmin(admin){
     title="Administradores"
     :filter="search"
     :rows="admins"
-    :columns="columns">
+    :columns="columns"
+    :pagination="{rowsPerPage: 0}">
     <template v-slot:top-right>
       <q-input borderless dense debounce="300" v-model="search" placeholder="Buscar...">
         <template v-slot:append>
@@ -99,10 +100,10 @@ function deleteAdmin(admin){
           hide-bottom-space
           outlined
           stack-label
-          :error="Boolean(form.errors.device_comunity_id)"
-          :error-message="form.errors.device_comunity_id ? form.errors.device_comunity_id : ''"
+          :error="Boolean(form.errors.device_community_id)"
+          :error-message="form.errors.device_community_id ? form.errors.device_community_id : ''"
           label="Zhyaf ID de Comunidad"
-          v-model="form.device_comunity_id"/>
+          v-model="form.device_community_id"/>
 
         <q-input
             hide-bottom-space

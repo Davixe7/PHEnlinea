@@ -155,7 +155,7 @@ Route::middleware(['auth:admin', 'phoneverified', 'suspended'])->group(function 
 
   Route::resource('residents', 'ResidentController');
 
-  Route::resource('visits', 'VisitController')->only(['index'])->middleware('modules:visits');
+  Route::get('visits', [App\Http\Controllers\VisitController::class, 'index'])->name('visits.index');
 
   Route::resource('invoices', InvoiceController::class)->only(['index', 'show', 'update']);
 

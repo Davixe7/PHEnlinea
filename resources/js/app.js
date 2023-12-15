@@ -1,12 +1,13 @@
 import { createApp, h } from 'vue'
 import { createInertiaApp } from '@inertiajs/vue3'
+import { ZiggyVue } from 'ziggy-js';
 
 import { Quasar, Notify } from 'quasar'
 import quasarLang from 'quasar/lang/es'
 import quasarIconSet from 'quasar/icon-set/material-symbols-outlined'
 
 // Import icon libraries
-import '@quasar/extras/roboto-font/roboto-font.css'
+// import '@quasar/extras/roboto-font/roboto-font.css'
 import '@quasar/extras/material-icons/material-icons.css'
 import '@quasar/extras/material-symbols-outlined/material-symbols-outlined.css'
 import 'quasar/src/css/index.sass'
@@ -23,6 +24,7 @@ createInertiaApp({
   setup({ el, App, props, plugin }) {
     createApp({ render: () => h(App, props) })
       .use(plugin)
+      .use(ZiggyVue)
       .use(Quasar, {
         config: {
           notify: {position: 'bottom-right'}

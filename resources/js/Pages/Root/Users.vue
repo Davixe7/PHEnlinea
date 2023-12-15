@@ -17,7 +17,8 @@ import { ref } from 'vue';
     title="Superusuarios"
     :filter="search"
     :rows="users"
-    :columns="columns">
+    :columns="columns"
+    :pagination="{rowsPerPage: 0}">
     <template v-slot:body-cell-actions="props">
       <q-td class="text-right">
         <q-btn flat round icon="sym_o_edit"/>

@@ -1,6 +1,6 @@
 <template>
   <div class="row justify-center">
-    <div class="col-12 col-md-7">
+    <div class="col-12 col-md-8">
       <q-table
         title="Mis facturas"
         :rows="invoices"

@@ -20,11 +20,11 @@
       </q-toolbar>
 
       <q-tabs align="left">
-        <q-route-tab href="/admin/users" label="Roots" />
-        <q-route-tab href="/admin/admins" label="Administradores" />
-        <q-route-tab href="/admin/porterias" label="Porterias" />
-        <q-route-tab href="/admin/invoices/upload" label="Facturas" />
-        <q-route-tab href="/admin/whatsapp_clients" label="Whatsapp" />
+        <q-route-tab @click="router.visit('/admin/users')" label="Roots" />
+        <q-route-tab @click="router.visit('/admin/admins')" label="Administradores" />
+        <q-route-tab @click="router.visit('/admin/porterias')" label="Porterias" />
+        <q-route-tab @click="router.visit('/admin/invoices/upload')" label="Facturas" />
+        <q-route-tab @click="router.visit('/admin/whatsapp_clients')" label="Whatsapp" />
       </q-tabs>
     </q-header>
 
