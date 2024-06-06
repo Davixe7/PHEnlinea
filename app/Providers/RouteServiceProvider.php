@@ -27,8 +27,6 @@ class RouteServiceProvider extends ServiceProvider
         Route::model('new', \App\Novelty::class);
         Route::model('censu', \App\Extension::class);
         Route::model('census', \App\Extension::class);
-        Route::model('classified', \App\Classified::class);
-        Route::model('clasificado', \App\Classified::class);
     }
 
     /**

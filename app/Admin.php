@@ -11,8 +11,9 @@ use Illuminate\Contracts\Auth\CanResetPassword;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use GuzzleHttp\Client;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class Admin extends Authenticatable implements MustVerifyEmail, CanResetPassword, HasMedia
+class Admin extends Authenticatable implements MustVerifyEmail, CanResetPassword, HasMedia, JWTSubject
 {
   use Notifiable;
   use InteractsWithMedia;
@@ -45,6 +46,26 @@ class Admin extends Authenticatable implements MustVerifyEmail, CanResetPassword
   protected $casts = [
     'solvencia'   => 'string',
   ];
+
+  /**
+     * Get the identifier that will be stored in the subject claim of the JWT.
+     *
+     * @return mixed
+     */
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    /**
+     * Return a key value array, containing any custom claims to be added to the JWT.
+     *
+     * @return array
+     */
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
 
   public function registerMediaCollections(): void
   {

@@ -20,7 +20,7 @@ class Cors
           return response('')
           ->header('Access-Control-Allow-Origin', '*')
           ->header('Access-Control-Allow-Methods', '*')
-          ->header('Access-Control-Allow-Headers', '*');
+          ->header('Access-Control-Allow-Headers', ['Authorization', 'Content-Type']);
         }
         
         $handle = $next($request);
@@ -31,7 +31,7 @@ class Cors
         
         return $handle->header('Access-Control-Allow-Origin', '*')
                ->header('Access-Control-Allow-Methods', '*')
-               ->header('Access-Control-Allow-Headers', '*');
+               ->header('Access-Control-Allow-Headers', ['Authorization', 'Content-Type']);
         
     }
 }

@@ -45,6 +45,29 @@ Route::middleware('auth:api-porteria')->group(function () {
   Route::post('whatsapp', 'WhatsappController@logHook')->name('whatsapp.hook');
 });
 
+
+Route::post('/v2/admin-login', 'Auth\ApiController@adminLogin');
+
+Route::middleware('auth:api-admin')->prefix('v2')->group(function(){
+  Route::post('messages', 'API\v2\MessageController@store');
+  Route::get('messages', 'API\v2\MessageController@index');
+  Route::get('messages/create', 'API\v2\MessageController@create');
+  Route::get('messages/authenticate', 'API\v2\MessageController@authenticate');
+  Route::get('messages/{batch_message}', 'API\v2\MessageController@show');
+
+  Route::apiResource('apartments', 'API\v2\ApartmentController');
+  Route::apiResource('residents', 'API\v2\ResidentController');
+  Route::apiResource('vehicles', 'API\v2\VehicleController');
+  Route::apiResource('visits', 'API\v2\VisitController');
+  Route::apiResource('petitions', 'API\v2\PetitionController');
+  Route::put('petitions/{petition}/markAsRead', 'API\v2\PetitionController@markAsRead');
+
+  Route::prefix('apartments/{apartment}')->name('apartments.')->group(function(){
+    Route::resource('residents', App\Http\Controllers\API\v2\ResidentController::class);
+    Route::resource('vehicles', App\Http\Controllers\API\v2\VehicleController::class);
+  });
+});
+
 Route::middleware('auth:api')->group(function () {
   Route::get('invoices', 'API\InvoiceController@index');
   Route::get('invoices/search', 'API\InvoiceController@search');

@@ -32,23 +32,28 @@ class ApiController extends Controller
   }
 
   public function adminLogin(Request $request){
+    $request->validate([
+      'email' => 'required|email',
+      'password' => 'required'
+    ]);
 
     $credentials = [
       'email'    => $request->email,
       'password' => $request->password
     ];
 
-    if( Auth::guard('admin')->attempt( $credentials ) ){
-      $token = Str::random(60);
-      $token = bcrypt( $token );
-
-      $user = Auth::guard('admin')->user();
-      $user->forceFill(['api_token'=>$token])->save();
-
-      return response()->json(['user'=>$user], 200);
+    if( !$token = Auth::guard('api-admin')->attempt( $credentials ) ){
+      return response()->json(['error'=>'Unauthorized'], 401);  
     }
 
-    return response()->json(['error'=>'Unauthorized'], 401);
+    $user = Auth::guard('api-admin')->user();
+    $user->forceFill(['api_token'=>$token]);
+
+    return response()->json([
+      'user'       => $user,
+      'token_type' => 'bearer',
+      'expires_in' => 10000
+    ]);
   }
 
   public function porteriaLogin(Request $request){
