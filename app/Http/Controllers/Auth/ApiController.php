@@ -11,6 +11,17 @@ use App\Extension;
 
 class ApiController extends Controller
 {
+  /**
+   * Log the user out (Invalidate the token).
+   *
+   * @return \Illuminate\Http\JsonResponse
+   */
+  public function logout()
+  {
+      auth('api-admin')->logout();
+      return response()->json(['message' => 'Successfully logged out']);
+  }
+
   public function login(Request $request){
 
     $credentials = [

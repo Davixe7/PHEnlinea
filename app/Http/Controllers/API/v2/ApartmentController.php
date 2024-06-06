@@ -7,6 +7,7 @@ use App\Extension;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreExtension as StoreExtensionRequest;
 use App\Http\Resources\Census as CensusResource;
+use App\Http\Resources\ExtensionCensus;
 use App\Traits\Devices;
 use Exception;
 use Illuminate\Support\Facades\Storage;
@@ -20,7 +21,16 @@ class ApartmentController extends Controller
      */
     public function index()
     {
-      $extensions = auth()->user()->extensions()->orderBy('name')->get();
+      $extensions = auth()->user()->extensions()->orderBy('name')->get([
+        'id',
+        'admin_id',
+        'name',
+        'pets_count',
+        'deposit',
+        'owner_phone',
+        'phone_1',
+        'phone_2',
+      ]);
       return response()->json(['data'=>$extensions]);
     }
     
@@ -97,15 +107,16 @@ class ApartmentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Extension $extension)
+    public function destroy(Request $request)
     {
+      $extension = Extension::find($request->apartment);
       $community_id = $extension->admin->device_community_id;
       $building_id  = $extension->admin->device_building_id;
 
       if( !$community_id || !$building_id ){
         $extension->residents()->delete();
         $extension->delete();
-        return response()->json(['data'=>'Extension deleted successfuly']);
+        return response()->json(['data' => 'Extension deleted successfuly']);
       }
 
       try {
@@ -113,7 +124,7 @@ class ApartmentController extends Controller
         $devices->deleteRoom($extension);
         $extension->residents()->delete();
         $extension->delete();
-        return response()->json(['data'=>'Extension deleted successfuly']);
+        return response()->json(['data' => "Extension {$extension->id} deleted successfuly"]);
       }
       catch(Exception $e){
         if( $e->getCode() == 10000){

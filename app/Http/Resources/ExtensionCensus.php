@@ -18,15 +18,11 @@ class ExtensionCensus extends JsonResource
       return [
         'id'          => $this->id,
         'name'        => $this->name,
+        'pets_count'  => $this->pets_count,
+        'deposit'     => $this->deposit,
+        'owner_phone' => $this->owner_phone,
         'phone_1'     => $this->phone_1,
         'phone_2'     => $this->phone_2,
-        'owner_phone' => $this->owner_phone,
-        'pets_count'  => $this->pets_count,
-        'has_deposit' => $this->has_deposit,
-        'has_own_parking' => $this->has_own_parking,
-        'vehicles'    => ($this->vehicles) ? count($this->vehicles) : 0,
-        'adults'      => $this->adults,
-        'minors'      => $this->minors,
       ];
     }
 }

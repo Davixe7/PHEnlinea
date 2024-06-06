@@ -50,6 +50,9 @@ Route::middleware('auth:api-porteria')->group(function () {
 Route::post('/v2/admin-login', 'Auth\ApiController@adminLogin');
 
 Route::middleware('auth:api-admin')->prefix('v2')->group(function(){
+  Route::get('/user', fn (Request $request) => $request->user());
+  Route::post('logout', 'Auth\ApiController@logout');
+
   Route::post('messages', 'API\v2\MessageController@store');
   Route::get('messages', 'API\v2\MessageController@index');
   Route::get('messages/create', 'API\v2\MessageController@create');
@@ -60,7 +63,9 @@ Route::middleware('auth:api-admin')->prefix('v2')->group(function(){
   Route::apiResource('residents', 'API\v2\ResidentController');
   Route::apiResource('vehicles', 'API\v2\VehicleController');
   Route::apiResource('visits', 'API\v2\VisitController');
+  Route::apiResource('novelties', 'API\v2\NoveltyController');
   Route::apiResource('petitions', 'API\v2\PetitionController');
+
   Route::put('petitions/{petition}/markAsRead', 'API\v2\PetitionController@markAsRead');
 
   Route::prefix('apartments/{apartment}')->name('apartments.')->group(function(){
