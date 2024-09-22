@@ -3,6 +3,7 @@
 use App\Invoice;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use app\Http\Controllers\API\v2\Admin\AdminController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -13,6 +14,10 @@ use Illuminate\Support\Facades\Auth;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::prefix('v2/admin')->group(function(){
+  Route::apiResource('admins', AdminController::class);
+});
+
 Route::post('/admin/login', 'Auth\LoginController@login');
 
 Route::get('visitors', 'API\VisitorController@index');
