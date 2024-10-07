@@ -5,9 +5,11 @@ namespace App;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Porteria extends Authenticatable implements JWTSubject
 {
+  use HasFactory;
 
   protected $fillable = ['name', 'email', 'password', 'admin_id'];
   protected $hidden   = ['password', 'created_at', 'updated_at'];

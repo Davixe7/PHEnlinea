@@ -6,38 +6,20 @@ use App\Invoice;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Rap2hpoutre\FastExcel\FastExcel;
 
 class InvoiceController extends Controller
 {
-  public function upload(Request $request)
+  public function index(Request $request)
   {
     $year  = $request->year  ?: Carbon::now()->year;
     $month = $request->month ?: Carbon::now()->month;
 
-    $monthsName = [
-      "Enero",
-      "Febrero",
-      "Marzo",
-      "Abril",
-      "Mayo",
-      "Junio",
-      "Julio",
-      "Agosto",
-      "Septiembre",
-      "Octubre",
-      "Noviembre",
-      "Diciembre"
-    ];
-
     $invoices = Invoice::inMonth($month, $year)->with('admin')->get()->sortBy('admin.name');
 
-    if ($request->expectsJson()) {
-      return response()->json(['data' => $invoices]);
-    }
-
-    return view('super.invoices.import', compact('invoices', 'month', 'year', 'monthsName'));
+    return response()->json(['data' => $invoices]);
   }
 
   public function update(Invoice $invoice, Request $request)
@@ -50,7 +32,7 @@ class InvoiceController extends Controller
     return response()->json(['data' => $invoice->load('admin')]);
   }
 
-  public function import(Request $request)
+  public function store(Request $request)
   {
 
     $request->validate([
@@ -59,7 +41,7 @@ class InvoiceController extends Controller
       'year'  => 'required',
     ]);
 
-    $date = $request->year . '-' . $request->month . '-01';
+    $date = $request->year . '-' . str_pad($request->month, 2, '0', STR_PAD_LEFT) . '-01';
     
     if( Invoice::where('date', $date)->count() ){
         DB::table('invoices')->where('date', $date)->delete();
@@ -74,32 +56,21 @@ class InvoiceController extends Controller
 
     $facturas = (new FastExcel)->import($path, function ($line) use ($date) {
       $nit = null;
-      if (!$line['Número Factura']) {
+      if (!$line['Número Documento']) {
         return;
       }
 
-    //  if(is_array( $nit = explode('-', $line['ID Cliente']) )){
-    //    $nit = $nit[1];
-    //  }
-
-     $nit = $line['ID Cliente'];
+     $nit = $line['Número Identificación Cliente'];
      
       return Invoice::create([
-        'number' => $line['Número Factura'],
+        'number' => $line['Número Documento'],
         'nit'    => $nit,
         'date'   => $date,
         'total'  => $line['Total'],
       ]);
     });
 
-    if ($request->expectsJson()) {
-      return response()->json(['data' => 'ok']);
-    }
-
-    if ($count = $facturas->count()) {
-      return redirect()->route('admin.invoices.upload')->with(['message' => "$count Facturas importadas con éxito"]);
-    }
-
-    return redirect()->route('admin.invoices.upload');
+    $count = $facturas->count();
+    return response()->json(['data' => $count]);
   }
 }

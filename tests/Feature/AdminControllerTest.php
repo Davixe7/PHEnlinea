@@ -24,8 +24,7 @@ class AdminControllerTest extends TestCase
     /** @test */
     public function it_can_create_an_admin()
     {
-        $adminData = Admin::factory()->make()->toArray();
-        $adminData['password'] = 'password';
+        $adminData = Admin::factory()->make(['nit'=>'123456'])->toArray();
 
         $response = $this->postJson('/api/v2/admin/admins', $adminData);
 
@@ -64,6 +63,6 @@ class AdminControllerTest extends TestCase
         $response = $this->deleteJson("/api/v2/admin/admins/{$admin->id}");
 
         $response->assertStatus(200)
-                 ->assertJson(['message' => 'Admin deleted successfully']);
+                 ->assertJson(['message'=>'Admin deleted successfully']);
     }
 }

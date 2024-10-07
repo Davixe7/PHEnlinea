@@ -17,7 +17,7 @@ class AdminController extends Controller
   use Uploads;
   
   public function __construct(){
-    $this->authorizeResource(Admin::class, 'admin');
+    //s$this->authorizeResource(Admin::class, 'admin');
   }
 
   public function index()
@@ -43,7 +43,11 @@ class AdminController extends Controller
   public function update(Request $request, Admin $admin)
   {
     $request->validate([
-      'nit' => 'required|unique:admins,nit,' . $admin->id
+      'nit'      => 'filled|digits_between:10,12|unique:admins,nit,' . $admin->id,
+      'email'    => 'sometimes|required|unique:admins,email,' . $admin->id,
+      'password' => 'filled|digits_between:6,16',
+      'address'  => 'filled',
+      'phone'    => 'filled|digits_between:10,12',
     ]);
 
     $data = $request->all();
@@ -61,7 +65,7 @@ class AdminController extends Controller
   public function destroy(Admin $admin)
   {
     $admin->delete();
-    return response()->json(['message'=>'Admin deleted successfuly']);
+    return response()->json(['message'=>'Admin deleted successfully']);
   }
 
   public function editPermissions(Request $request, Admin $admin){

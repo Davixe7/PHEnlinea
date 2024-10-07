@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\DB;
 class PorteriaController extends Controller
 {
   public function __construct(){
-    $this->authorizeResource(Porteria::class, 'porteria');
+    //$this->authorizeResource(Porteria::class, 'porteria');
   }
   
   /**
@@ -28,17 +28,7 @@ class PorteriaController extends Controller
     $porterias = Porteria::orderBy('created_at', 'DESC')->with('admin')->get();
     $admins    = Admin::orderBy('id', 'ASC')->get();
 
-    return view('super.porterias.index', compact('porterias', 'admins'));
-  }
-  
-  /**
-  * Show the form for creating a new resource.
-  *
-  * @return \Illuminate\Http\Response
-  */
-  public function create()
-  {
-    return view('porterias.create');
+    return response()->json(['data' => $porterias]);
   }
   
   /**
@@ -68,17 +58,6 @@ class PorteriaController extends Controller
   public function show(Porteria $porteria)
   {
     return new PorteriaResource( $porteria );
-  }
-  
-  /**
-  * Show the form for editing the specified resource.
-  *
-  * @param  \App\Porteria  $porteria
-  * @return \Illuminate\Http\Response
-  */
-  public function edit(Porteria $porteria)
-  {
-    return view('porterias.edit', ['porteria'=>$porteria]);
   }
   
   /**

@@ -26,12 +26,12 @@ class BatchMessageController extends Controller
 
     $instances = Admin::orderBy('whatsapp_instance_id', 'DESC')->get(['whatsapp_instance_id', 'name', 'id']);
 
-    return view('super.batch_messages', compact('messages', 'statuses', 'instances'));
+    return response()->json(['data'=>$messages]);
   }
 
   function instances(){
     $admins = Admin::orderBy('whatsapp_instance_id', 'DESC')->get(['whatsapp_instance_id', 'name', 'id']);
-    return view('super.instances', compact('admins'));
+    return response()->json(['data'=>$admins]);
   }
 
   function destroy(BatchMessage $batchMessage){
