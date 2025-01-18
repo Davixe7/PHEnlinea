@@ -23,10 +23,11 @@ Route::prefix('v2/admin')->group(function(){
 
   Route::apiResource('admins', AdminController::class);
   Route::apiResource('porterias', PorteriaController::class);
-  Route::apiResource('whatsapp_clients', WhatsappClientController::class);
-  Route::get('whatsapp_clients/scan/{whatsapp_client}', [WhatsappClientController::class, 'scan']);
   Route::apiResource('invoices', InvoiceController::class);
-  Route::get('batch_messages', [BatchMessageController::class, 'index']);
+  Route::apiResource('batch_messages', BatchMessageController::class)->only(['index']);
+  
+  Route::apiResource('whatsapp_clients', WhatsappClientController::class);
+  Route::get('whatsapp_clients/{whatsapp_client}/scan', [WhatsappClientController::class, 'scan']);
   Route::get('whatsapp_instances', [BatchMessageController::class, 'instances']);
   Route::post('whatsapp_instances/{admin}', [BatchMessageController::class, 'updateInstance']);
   

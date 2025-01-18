@@ -38,23 +38,26 @@ class WhatsappClientController extends Controller
 
   public function scan(Request $request, WhatsappClient $whatsapp_client)
   {
-    $whatsapp      = new Whatsapp();
-    $instance_id   = '00000000000';
-    $base64        = file_get_contents(storage_path('/app/qr'));
-
-    //$whatsapp->setWebhook($instance_id, 'https://phenlinea.com/whatsapp/hook');
-
-    return response()->json(['data'=>[
-      'whatsapp_client' => $whatsapp_client,
-      'instance_type'   => $request->instance_type,
-      'instance_id'     => $instance_id,
-      'base64'          => $base64,
-      'labels'          => [
-        'delivery_instance_id' => 'Encomiendas',
-        'batch_instance_id'    => 'Masívos',
-        'comunity_instance_id' => 'Comunidad',
-      ]
-    ]]);
+    try {
+      $whatsapp      = new Whatsapp($whatsapp_client);
+      $instance_id   = $whatsapp->getInstanceId();
+      $base64        = $whatsapp->getQrCode();
+      $webhookSet    = $whatsapp->setWebhook($instance_id, 'https://phenlinea.com/whatsapp/hook');
+      return response()->json(['data'=>[
+        'whatsapp_client' => $whatsapp_client,
+        'instance_type'   => $request->instance_type,
+        'instance_id'     => $instance_id,
+        'base64'          => $base64,
+        'labels'          => [
+          'delivery_instance_id' => 'Encomiendas',
+          'batch_instance_id'    => 'Masívos',
+          'comunity_instance_id' => 'Comunidad',
+        ]
+      ]]);
+    }
+    catch(Exception $e){
+      abort(500, 'Error solictando parametros para escanear');
+    }
     
     return response()->json(['data'=>[
       'whatsapp_client' => $whatsapp_client,
